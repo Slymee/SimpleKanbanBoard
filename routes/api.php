@@ -9,9 +9,11 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::prefix('/task')->group(function () {
-    Route::get('/', [TaskController::class, 'index']);
-    Route::post('/create', [TaskController::class, 'store']);
-    Route::put('/update/{id}', [TaskController::class, 'update']);
-    Route::delete('/delete/{id}', [TaskController::class, 'destroy']);
-});
+// Route::prefix('/task')->group(function () {
+//     Route::get('/', [TaskController::class, 'index']);
+//     Route::post('/create', [TaskController::class, 'store']);
+//     Route::put('/update/{id}', [TaskController::class, 'update']);
+//     Route::delete('/delete/{id}', [TaskController::class, 'destroy']);
+// });
+
+Route::apiResource('tasks', TaskController::class);
