@@ -4,7 +4,7 @@ namespace App\Repository\Interface;
 
 interface BaseInterface
 {    
-    public function get();
+    public function get($sortBy, $sortOrder);
 
     public function create(array $data);
 

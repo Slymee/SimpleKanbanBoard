@@ -13,9 +13,9 @@ abstract class BaseRepository implements BaseInterface
     {
     }
 
-    public function get()
+    public function get($sortBy, $sortOrder)
     {
-        return $this->model->all();
+        return $this->model->orderBy($sortBy, $sortOrder)->get();
     }
 
     public function create(array $data)

@@ -8,6 +8,7 @@ use App\Http\Resources\ErrorResource;
 use App\Http\Resources\TaskResource;
 use App\Repository\Interface\TaskInterface;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -16,9 +17,12 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = $this->taskRepo->get();
+        $sortBy = $request->get('sort_by', 'title');
+        $sortOrder = $request->get('sort_order', 'asc');
+
+        $tasks = $this->taskRepo->get($sortBy, $sortOrder);
         return TaskResource::collection($tasks);
     }
 
