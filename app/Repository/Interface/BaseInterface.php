@@ -8,7 +8,7 @@ interface BaseInterface
 
     public function create(array $data);
 
-    public function update(array $data);
+    public function update(array $data, string $id);
 
     public function delete(string $id);
 }
