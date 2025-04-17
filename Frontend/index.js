@@ -1,11 +1,11 @@
-let draggedTask = null
+let draggedTask = null;
 
 function displayTask(task) {
     const taskElement = document.createElement('div');
     taskElement.className = 'task';
     taskElement.draggable = true;
     taskElement.ondragstart = (event) => {
-        draggedTask = taskElement
+        draggedTask = taskElement;
         event.dataTransfer.setData('text/plain', task.title);
         event.dataTransfer.setData('task-id', task.id);
     };
@@ -22,6 +22,8 @@ function displayTask(task) {
     const priorityElement = document.createElement('div');
     priorityElement.className = 'task-priority';
     priorityElement.innerText = `Priority: ${task.priority}`;
+    // Add specific class based on priority
+    priorityElement.classList.add(task.priority);
 
     const deleteButton = document.createElement('button');
     deleteButton.innerText = 'Delete';
@@ -63,13 +65,12 @@ async function createTask(title, description, priority, status) {
         });
 
         const jsonData = await postData.json();
-        const task = jsonData.data;;
+        const task = jsonData.data;
         displayTask(task);
     } catch (error) {
         console.log("Some error occurred" + error);
     }
 }
-
 
 // Function to delete a task
 async function deleteTask(taskId, taskElement) {
@@ -94,7 +95,10 @@ async function deleteTask(taskId, taskElement) {
 
 // Update task status in the API
 async function updateTaskStatus(taskId, newStatus) {
-    const allTasksList = await getAllTasks();
+    const allTasksList = await getAllTasks(
+        document.getElementById('sortBySelect').value,
+        document.getElementById('sortOrderSelect').value
+    );
     const updatedTask = allTasksList.find(task => +task.id === +taskId);
     if (!updatedTask) {
         alert("Task not found");
@@ -102,21 +106,39 @@ async function updateTaskStatus(taskId, newStatus) {
     }
 
     try {
-        const response = await fetch(`http://localhost:8000/api/tasks/${taskId}/`, { // Use the task ID in the URL
+        const response = await fetch(`http://localhost:8000/api/tasks/${taskId}/`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ ...updatedTask, status: newStatus }), // Only update the status
         });
-        const data = await response.json()
+        const data = await response.json();
         console.log(`Task with ID "${taskId}" moved to ${newStatus}`);
     } catch (error) {
         console.error('Error updating task status:', error);
     }
 }
 
+// Function to reload tasks with current sort settings
+async function reloadTasks() {
+    // Clear all current tasks
+    document.querySelectorAll('.tasks').forEach(column => {
+        column.innerHTML = '';
+    });
 
+    // Get sort parameters
+    const sortBy = document.getElementById('sortBySelect').value;
+    const sortOrder = document.getElementById('sortOrderSelect').value;
+
+    // Fetch and display tasks with current sort settings
+    const allTasksList = await getAllTasks(sortBy, sortOrder);
+    if (!!allTasksList) {
+        allTasksList.forEach(task => {
+            displayTask(task);
+        });
+    }
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     const taskModal = document.getElementById('taskModal');
@@ -125,16 +147,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const taskTitleInput = document.getElementById('taskTitle');
     const taskDescriptionInput = document.getElementById('taskDescription');
     const taskPriorityInput = document.getElementById('taskPriority');
+    const sortBySelect = document.getElementById('sortBySelect');
+    const sortOrderSelect = document.getElementById('sortOrderSelect');
     let currentStatus = '';
 
-    // Fetch tasks from the API and display them
-    const allTasksList = await getAllTasks()
+    // Initial load of tasks with default sorting
+    const allTasksList = await getAllTasks();
     if (!!allTasksList) {
         allTasksList.forEach(task => {
             displayTask(task);
         });
     }
 
+    // Add event listeners for sort dropdowns
+    sortBySelect.addEventListener('change', reloadTasks);
+    sortOrderSelect.addEventListener('change', reloadTasks);
 
     // Open modal to add a task
     document.querySelectorAll('.addTaskBtn').forEach(button => {
@@ -170,7 +197,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
-
     window.allowDrop = (event) => {
         event.preventDefault();
     };
@@ -185,6 +211,4 @@ document.addEventListener('DOMContentLoaded', async () => {
             updateTaskStatus(taskId, newStatus);
         }
     };
-
-
 });

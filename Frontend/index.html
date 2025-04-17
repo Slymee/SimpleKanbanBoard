@@ -1,15 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Kanban Board</title>
 </head>
+
 <body>
+    <div class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">Kanban Board</div>
+            <div class="sort-controls">
+                <div class="sort-group">
+                    <span class="sort-label">Sort by:</span>
+                    <select id="sortBySelect">
+                        <option value="title">Title</option>
+                        <option value="priority">Priority</option>
+                        <option value="status">Status</option>
+                        <option value="created_at">Date Created</option>
+                    </select>
+                </div>
+                <div class="sort-group">
+                    <span class="sort-label">Order:</span>
+                    <select id="sortOrderSelect">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container">
         <div class="board">
-            <div class="column"  ondragover="allowDrop(event)">
+            <div class="column" ondragover="allowDrop(event)">
                 <h2>Not Started</h2>
                 <div class="tasks" ondrop="drop(event)" id="not-started"></div>
                 <button class="addTaskBtn" data-status="not-started">Add Task</button>
@@ -50,4 +76,5 @@
 
     <script src="index.js"></script>
 </body>
+
 </html>
