@@ -60,8 +60,6 @@ Follow these steps to set up and run the Kanban board locally.
    ```bash
    git clone git@github.com:Slymee/SimpleKanbanBoard.git
    cd SimpleKanbanBoard
-
-   php artisan key:generate
    ```
 2. **Install PHP Dependencies***
    ```bash
@@ -170,6 +168,10 @@ The application provides the following RESTful API endpoints for managing tasks.
     }
 
     ```
+
+### Access the App
+Once running, visit: [http://localhost:8000](http://localhost:8000)
+
 
 ## Contributing
 
