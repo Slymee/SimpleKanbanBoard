@@ -11,9 +11,9 @@ A simple Kanban board built using Laravel, with a CRUD API for managing tasks, a
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [API Endpoints](#api-endpoints)
-- [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
+- [Contact](#contact)
 
 ---
 
@@ -96,4 +96,96 @@ Follow these steps to set up and run the Kanban board locally.
    ```bash
    php artisan serve
    ```
-   
+
+## API Endpoints
+
+The application provides the following RESTful API endpoints for managing tasks.
+
+### **GET /api/tasks**
+
+- **Description**: Fetch all tasks, sorted by a specified field and order.
+- **Query Parameters**:
+  - `sort_by` (optional): The field to sort by. Defaults to `title`. Example: `sort_by=priority`
+  - `sort_order` (optional): The sort order. Can be `asc` or `desc`. Defaults to `asc`. Example: `sort_order=desc`
+- **Response**: Returns a list of tasks in JSON format.
+
+  **Example Response**:
+  ```json
+  [
+    {
+        "id": 1,
+        "title": "Task 1",
+        "description": "Description of Task 1",
+        "priority": "High",
+        "status": "To Do",
+        "created_at": "2023-01-01T00:00:00",
+        "updated_at": "2023-01-01T00:00:00"
+    },
+    {
+        "id": 2,
+        "title": "Task 2",
+        "description": "Description of Task 2",
+        "priority": "Medium",
+        "status": "In Progress",
+        "created_at": "2023-01-02T00:00:00",
+        "updated_at": "2023-01-02T00:00:00"
+    }
+  ]
+  ```
+  
+  ### **POST /api/tasks**
+
+  - **Description**: Description: Create a new task.
+  - **Request Body: **:
+    ```json
+    {
+        "title": "New Task",
+        "description": "Description of the new task",
+        "priority": "Medium",
+        "status": "To Do"
+    }
+    ```
+
+  ### **PUT /api/tasks**
+
+  - **Description**: Update an existing task by its ID.
+  - **Request Body: **:
+    ```json
+    {
+        "title": "Updated Task Title",
+        "description": "Updated task description",
+        "priority": "High",
+        "status": "In Progress"
+    }
+    ```
+
+  ### **DELETE /api/tasks/{id}**
+
+  - **Description**: Delete a task by its ID.
+  - **Response: Returns a success message indicating whether the task was deleted successfully.**:
+    ```json
+    {
+        "success": true,
+        "message": "Task deleted successfully"
+    }
+
+    ```
+
+## Contributing
+
+Contributions are welcome! Feel free to fork the repo and submit a pull request.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## Contact
+
+Project by [Slymee](https://github.com/Slymee)
